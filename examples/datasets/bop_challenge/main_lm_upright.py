@@ -12,6 +12,18 @@ parser.add_argument('--num_scenes', type=int, default=2000, help="How many scene
 args = parser.parse_args()
 
 start_time = time.time()
+# define depth range & elevation range
+# the origin params
+# depth_min = 0.35
+# depth_max = 1.5
+# elevation_min = 5
+# elevation_max = 89
+
+# ycbv params
+depth_min = 0.61
+radius_max = 1.24
+elevation_min = 5
+elevation_max = 89
 
 bproc.init()
 
