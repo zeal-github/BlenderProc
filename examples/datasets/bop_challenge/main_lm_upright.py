@@ -18,12 +18,16 @@ start_time = time.time()
 # depth_max = 1.5
 # elevation_min = 5
 # elevation_max = 89
+# inplane_min = -0.7854
+# inplane_max = 0.7854
 
 # ycbv params
 depth_min = 0.61
-radius_max = 1.24
+depth_max = 1.24
 elevation_min = 5
 elevation_max = 89
+inplane_min = -3.14159
+inplane_max = 3.14159
 
 bproc.init()
 
@@ -131,14 +135,14 @@ for i in range(args.num_scenes):
     while cam_poses < 25:
         # Sample location
         location = bproc.sampler.shell(center = [0, 0, 0],
-                                radius_min = 0.35,
-                                radius_max = 1.5,
-                                elevation_min = 5,
-                                elevation_max = 89)
+                                radius_min = depth_min,
+                                radius_max = depth_max,
+                                elevation_min = elevation_min,
+                                elevation_max = elevation_max)
         # Determine point of interest in scene as the object closest to the mean of a subset of objects
         poi = bproc.object.compute_poi(np.random.choice(sampled_target_bop_objs, size=10, replace=False))
         # Compute rotation based on vector going from location towards poi
-        rotation_matrix = bproc.camera.rotation_from_forward_vec(poi - location, inplane_rot=np.random.uniform(-0.7854, 0.7854))
+        rotation_matrix = bproc.camera.rotation_from_forward_vec(poi - location, inplane_rot=np.random.uniform(inplane_min, inplane_max))
         # Add homog cam pose based on location an rotation
         cam2world_matrix = bproc.math.build_transformation_mat(location, rotation_matrix)
         
